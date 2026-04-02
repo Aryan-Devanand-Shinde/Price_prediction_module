@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Price Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-green-50 p-6">
+
+<div class="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow">
+
+    <h1 class="text-3xl font-bold mb-4">🌱 Price Prediction</h1>
+
+    <form id="form" class="space-y-4">
+
+        <!-- Auto Location -->
+        <select id="auto_location" class="w-full border p-2">
+            <option value="true">Auto Location</option>
+            <option value="false">Manual</option>
+        </select>
+
+        <!-- Commodity -->
+        <select id="commodity" class="w-full border p-2 rounded">
+
+  <!-- 🧅 Vegetables -->
+  <optgroup label="🧅 Vegetables">
+    <option value="onion">🧅 Onion</option>
+    <option value="tomato">🍅 Tomato</option>
+    <option value="potato">🥔 Potato</option>
+    <option value="cabbage">🥬 Cabbage</option>
+    <option value="carrot">🥕 Carrot</option>
+    <option value="chilli">🌶️ Chilli</option>
+    <option value="brinjal">🍆 Brinjal</option>
+    <option value="cucumber">🥒 Cucumber</option>
+    <option value="cauliflower">🥦 Cauliflower</option>
+    <option value="beetroot">🍠 Beetroot</option>
+    <option value="bhindi">🟢 Bhendi (Okra)</option>
+    <option value="garlic">🧄 Garlic</option>
+    <option value="ginger">🫚 Ginger</option>
+    <option value="sweet potato">🥔 Sweet Potato</option>
+    <option value="spring onion">🧅 Spring Onion</option>
+    <option value="spinach">🥬 Spinach</option>
+    <option value="methi">🥬 Fenugreek (Methi)</option>
+    <option value="coriander leaves">🥬 Coriander Leaves</option>
+    <option value="bottle gourd">🥬 Bottle Gourd</option>
+    <option value="ridge gourd">🥬 Ridge Gourd</option>
+    <option value="bitter gourd">🥬 Bitter Gourd</option>
+    <option value="snake gourd">🥬 Snake Gourd</option>
+    <option value="drumstick">🥬 Drumstick</option>
+    <option value="pumpkin">🥬 Pumpkin</option>
+    <option value="capsicum">🥬 Capsicum</option>
+  </optgroup>
+
+  <!-- 🍎 Fruits -->
+  <optgroup label="🍎 Fruits">
+    <option value="apple">🍎 Apple</option>
+    <option value="banana">🍌 Banana</option>
+    <option value="orange">🍊 Orange</option>
+    <option value="grapes">🍇 Grapes</option>
+    <option value="watermelon">🍉 Watermelon</option>
+    <option value="muskmelon">🍈 Muskmelon</option>
+    <option value="mango">🥭 Mango</option>
+    <option value="pineapple">🍍 Pineapple</option>
+    <option value="papaya">🍑 Papaya</option>
+    <option value="lemon">🍋 Lemon</option>
+    <option value="guava">🍐 Guava</option>
+    <option value="strawberry">🍓 Strawberry</option>
+  </optgroup>
+
+  <!-- 🌾 Grains -->
+  <optgroup label="🌾 Grains">
+    <option value="wheat">🌾 Wheat</option>
+    <option value="rice">🌾 Rice</option>
+    <option value="maize">🌽 Maize</option>
+    <option value="barley">🌾 Barley</option>
+    <option value="bajra">🌾 Bajra</option>
+    <option value="jowar">🌾 Jowar</option>
+  </optgroup>
+
+  <!-- 🌱 Pulses -->
+  <optgroup label="🌱 Pulses">
+    <option value="chana">🟡 Chana (Gram)</option>
+    <option value="moong">🟢 Moong</option>
+    <option value="urad">🟤 Urad</option>
+    <option value="masoor">🟠 Masoor</option>
+    <option value="arhar">🟡 Arhar (Toor Dal)</option>
+  </optgroup>
+
+  <!-- 🌶️ Spices -->
+  <optgroup label="🌶️ Spices">
+    <option value="red chilli">🌶️ Red Chilli</option>
+    <option value="turmeric">🟡 Turmeric</option>
+    <option value="coriander">🟤 Coriander Seeds</option>
+    <option value="cumin">🟤 Cumin</option>
+    <option value="mustard">🟤 Mustard</option>
+  </optgroup>
+
+  <!-- 🥜 Oil Seeds -->
+  <optgroup label="🥜 Oil Seeds">
+    <option value="groundnut">🥜 Groundnut</option>
+    <option value="sunflower">🌻 Sunflower</option>
+    <option value="soybean">🟤 Soybean</option>
+    <option value="sesame">⚪ Sesame</option>
+  </optgroup>
+
+  <!-- 🍬 Others -->
+  <optgroup label="🍬 Others">
+    <option value="sugarcane">🍬 Sugarcane</option>
+    <option value="jaggery">🧂 Jaggery</option>
+    <option value="tea">☕ Tea</option>
+    <option value="coffee">☕ Coffee</option>
+  </optgroup>
+
+</select>
+
+        <!-- Inputs -->
+        <input id="latitude" class="w-full border p-2" placeholder="Latitude">
+        <input id="longitude" class="w-full border p-2" placeholder="Longitude">
+
+        <button class="bg-green-500 text-white p-2 w-full">Predict</button>
+    </form>
+
+    <div id="result" class="mt-6"></div>
+
+</div>
+
+<script>
+const autoLocation = document.getElementById("auto_location");
+
+const latInput = document.getElementById("latitude");
+const lonInput = document.getElementById("longitude");
+
+autoLocation.addEventListener("change", (e) => {
+    if (e.target.value === "true") {
+        latInput.style.display = "none";
+        lonInput.style.display = "none";
+
+        navigator.geolocation.getCurrentPosition((pos) => {
+            latInput.value = pos.coords.latitude;
+            lonInput.value = pos.coords.longitude;
+        });
+
+    } else {
+        latInput.style.display = "block";
+        lonInput.style.display = "block";
+    }
+});
+
+// 🔥 AUTO LOAD LOCATION
+window.onload = () => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+        document.getElementById("latitude").value = pos.coords.latitude;
+        document.getElementById("longitude").value = pos.coords.longitude;
+    });
+};
+
+document.getElementById("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const lat = document.getElementById("latitude").value;
+    const lon = document.getElementById("longitude").value;
+    const commodity = document.getElementById("commodity").value;
+
+    if (!lat || !lon) {
+        alert("Location not ready. Wait 2 seconds.");
+        return;
+    }
+
+    const res = await fetch("/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            latitude: lat,
+            longitude: lon,
+            commodity: commodity
+        })
+    });
+
+    const data = await res.json();
+
+    if (data.status === "success") {
+        let html = `
+    <h3>📍 ${data.state}</h3>
+    <p>Total Records: ${data.total_records}</p>
+    <p>Filtered: ${data.filtered_count}</p>
+
+    <br>
+    <b>📊 Wholesale Price (₹/quintal):</b><br>
+    Base: ${data.base_price}<br>
+    Max : ${data.max_price}<br>
+
+    <br>
+    <b>📊 (wholesale price) Per KG:</b><br>
+    Base: ${data.base_price_kg}<br>
+    Max : ${data.max_price_kg}<br>
+
+    <hr><br>
+`;
+
+        data.data.forEach(d => {
+            html += `<p>${d.date} | ${d.market} | ₹${d.price}</p>`;
+        });
+
+        document.getElementById("result").innerHTML = html;
+    } else {
+        alert(data.message);
+    }
+});
+</script>
+
+</body>
+</html>
