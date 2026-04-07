@@ -146,7 +146,7 @@ autoLocation.addEventListener("change", (e) => {
     }
 });
 
-// AUTO LOAD LOCATION
+// 🔥 AUTO LOAD LOCATION
 window.onload = () => {
     navigator.geolocation.getCurrentPosition((pos) => {
         document.getElementById("latitude").value = pos.coords.latitude;
@@ -190,13 +190,6 @@ document.getElementById("form").addEventListener("submit", async (e) => {
     Max : ${data.max_price}<br>
 
     <br>
-
-    <b>📊 Last Year Price (Excel):</b><br>
-    Min: ${data.excel_min ?? "N/A"}<br>
-    Max: ${data.excel_max ?? "N/A"}<br>
-
-    <br>
-
     <b>📊 (wholesale price) Per KG:</b><br>
     Base: ${data.base_price_kg}<br>
     Max : ${data.max_price_kg}<br>
